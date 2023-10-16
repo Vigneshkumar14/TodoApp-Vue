@@ -2,7 +2,7 @@
 export default {
   data() {
     return {
-      inputValue: ''
+      inputValue: '',
     }
   },
   methods: {
@@ -18,7 +18,7 @@ export default {
   <div class="greetings">
     <h1 class="green">Enter the Todo Below</h1>
 
-    <input class="center" type="text" v-model="inputValue" placeholder="Type here to Add Todo" />
+    <input class="center" type="text" v-model="inputValue" placeholder="Type here to Add Todo" @keydown.enter = "emitInput" />
 
     <button class="green-button" @click="emitInput">Add Todo</button>
   </div>

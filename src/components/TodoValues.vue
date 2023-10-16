@@ -1,10 +1,32 @@
 <script>
 export default {
   props: ['valuefromInput'],
+  data(){
+    return {
+        editingId:'',
+        editValue:'',
+    }
+  },
   methods:{
     deleteTodo(id){
         this.$emit('delete-todo',id)
     }
+    ,
+    startEdit(id, value){
+        this.editingId = id;
+        this.editValue = value;
+    },
+    saveEdit(id){
+        this.$emit('edit-todo', id, this.editValue);
+        this.editValue = "";
+        this.editingId = "";
+    },
+    saveCancel(){
+        this.editValue = "";
+        this.editingId = "";
+    }
+
+
   }
 }
 </script>
@@ -18,12 +40,22 @@ export default {
     <h1 class="notfound"> No Todos Found</h1>
     </div>  
 
-    <div v-else v-for="todo in valuefromInput" >
-        <div key="todo.id" class="container-items">
+    <div v-else v-for="todo in valuefromInput" :key="todo.id" >
+    <div v-if="editingId !== todo.id" class="container-items">
         <h1 >{{todo.value}}</h1>
         <div class="container-buttons">
-          <!-- <button style="color: white; background-color: green; padding:5px 10px; margin: 0 10px; @click">Edit</button> -->
+          <button style="color: white; background-color: green; padding:5px 10px; margin: 0 10px;" @click="startEdit(todo.id, todo.value)" >Edit</button>
           <button style="background-color: red; color: white;padding: 5px 8px; margin: 0 10px;" @click="deleteTodo(todo.id)">Delete</button>
+        </div>
+    </div>
+
+    <!-- Edit View -->
+
+    <div v-else class="container-items">
+        <input type="text" v-model="editValue" class="editInput" @keydown.enter = "saveEdit(todo.id)" >
+        <div class="container-buttons">
+            <button style="color: white; background-color: green; padding:5px 10px; margin: 0 10px;" @click="saveEdit(todo.id)" >Save</button>
+            <button style="background-color: red; color: white;padding: 5px 8px; margin: 0 10px;" @click="saveCancel">Cancel</button>
         </div>
     </div>
       </div>
@@ -79,5 +111,17 @@ export default {
 .container-buttons h1 {
   padding-left: 10px;
   color: white;
+}
+
+
+/* Edit Values Input */
+.editInput{
+    background-color: transparent;
+    padding: 10px;
+    color: white;
+    border: 0;
+    font-size: large;
+    margin-bottom: 5px;
+    width: 80%;
 }
 </style>
