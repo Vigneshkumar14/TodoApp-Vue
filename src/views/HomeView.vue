@@ -11,7 +11,7 @@ export default {
   },
   methods: {
     getValue(value) {
-      this.valuefromInput.push({ id: this.valuefromInput.length + 1, value })
+      this.valuefromInput.push({ id: Math.ceil(Math.random()*1000000), value })
     },
     deleteTodo(id) {
       const updatedValue = this.valuefromInput.filter((todo) => todo.id !== id)
